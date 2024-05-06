@@ -1,0 +1,43 @@
+format = """
+[](green) $username\
+$hostname\
+$directory\
+$kubernetes\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status
+$character"""
+
+# プロンプトの先頭に改行を表示しません
+add_newline = false
+
+[character]
+success_symbol = "[❯](bold bright-green) "
+error_symbol = "[❯](bold red) "
+vicmd_symbol = "[V](bold bright-green) "
+
+[username]
+format = "[$user](bold bright-green)"
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+format =  "[@$hostname](bold bright-green) "
+disabled = false
+
+[directory]
+truncation_length = 4
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[kubernetes]
+format = '[$symbol$context( \($namespace\))](yellow) '
+disabled = false
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+truncation_length = 20
+truncation_symbol = ""
+

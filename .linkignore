@@ -6,4 +6,5 @@
 .cspell.json
 .vale.ini
 .nvim
+.gitmodules
 

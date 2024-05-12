@@ -126,3 +126,14 @@ export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 # shell統合（terminalの拡大、縮小をするために導入）
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# init tmux
+# すでにattachされているセッションがある場合は何もしない（tmux sessionに入った時にnestでエラーになるのを防ぐため）
+# それ以外でセッションがあればatach、なければ新規にセッション作成
+if [ -n "$(tmux ls 2>/dev/null | grep attached)" ]; then
+        # do nothing
+elif [ -n "$(tmux ls 2>/dev/null)" ]; then
+        tmux a
+else
+        tmux
+fi
+

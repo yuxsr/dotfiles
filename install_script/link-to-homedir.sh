@@ -23,24 +23,6 @@ function backup_and_link() {
 	command ln -snf "$link_src_file" "$link_dest_dir"
 }
 
-function install_by_local_installer() {
-	local link_src_file=$1
-	local backupdir=$2
-
-	local file_list
-	file_list=$(command find "$link_src_file" -name "_install.sh" -type f 2>/dev/null)
-	if [[ -n "$file_list" ]]; then
-		if [[ -e "$f_filepath" ]]; then
-			command cp -r "$f_filepath" "$backupdir"
-		fi
-		for f in $file_list; do
-			eval "$f"
-		done
-		return 0
-	fi
-	return 1
-}
-
 function link_config_dir() {
 	local dotfiles_dir=$1
 	local backupdir="${2}/.config"
@@ -49,6 +31,18 @@ function link_config_dir() {
 	mkdir_not_exist "$dest_dir"
 
 	for f in "$dotfiles_dir"/.config/??*; do
+		backup_and_link "$f" "$dest_dir" "$backupdir"
+	done
+}
+
+function link_tmux_plugins_dir() {
+	local dotfiles_dir=$1
+	local backupdir="${2}/.tmux/plugins"
+	mkdir_not_exist "$backupdir"
+	local dest_dir="${HOME}/.tmux/plugins"
+	mkdir_not_exist "$dest_dir"
+
+	for f in "$dotfiles_dir"/.tmux/plugins/??*; do
 		backup_and_link "$f" "$dest_dir" "$backupdir"
 	done
 }
@@ -78,6 +72,7 @@ function link_to_homedir() {
 			f_filename=$(basename "$f")
 			[[ ${linkignore[*]} =~ $f_filename ]] && echo "ignore link, $f_filename" && continue
 			[[ "$f_filename" == ".config" ]] && link_config_dir "$dotfiles_dir" "$backupdir" && continue
+			[[ "$f_filename" == ".tmux" ]] && link_tmux_plugins_dir "$dotfiles_dir" "$backupdir" && continue
 			backup_and_link "$f" "$HOME" "$backupdir"
 		done
 	fi

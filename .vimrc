@@ -6,8 +6,11 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'roxma/vim-tmux-clipboard'
+Plug 'tmux-plugins/vim-tmux-focus-events'
 call plug#end()
 
+"" theme
 " Important!!
 if has('termguicolors')
 	set termguicolors
@@ -25,4 +28,7 @@ let g:everforest_background = 'medium'
 let g:everforest_better_performance = 1
 
 colorscheme everforest
+
+" vim-tmux-clipboard
+let g:vim_tmux_clipboard#loadb_option = '-w'
 

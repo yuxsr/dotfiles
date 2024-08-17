@@ -107,6 +107,59 @@ fvim() {
   vim "$dir"
 }
 
+#####
+# ghq
+#####
+
+# cd ghq repo with fzf
+gcd() {
+	local groot=$(ghq root)
+	local src=$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $groot/{}/README.*")
+	if [ -n "$src" ]; then
+		cd "$groot/$src"
+	fi
+}
+
+# open vscode ghq repo with fzf
+gcode() {
+	local groot=$(ghq root)
+	local src=$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $groot/{}/README.*")
+	if [ -n "$src" ]; then
+		code "$groot/$src"
+	fi
+}
+
+# gadd() add existing repository to ghq
+# 移行した後ものと場所にシンボリックリンクを作成する（GHQ_MIGRATOR_LINK=1）
+function gadd() {
+	if [ -z "$1" ]; then
+		echo "Usage: gadd <targetpath>"
+		return 1
+	fi
+
+	local groot=$(ghq root)
+	local targetpath=$1
+
+	$groot/github.com/astj/ghq-migrator/ghq-migrator.bash "$targetpath"
+
+	while true; do
+		echo "Do you want to add? (y/n)"
+		read -r answer
+		case $answer in
+			[Yy]* )
+				GHQ_MIGRATOR_ACTUALLY_RUN=1 GHQ_MIGRATOR_LINK=1 $groot/github.com/astj/ghq-migrator/ghq-migrator.bash "$targetpath"
+				break
+				;;
+			[Nn]* )
+				echo "Process terminated."
+				return 0
+				;;
+			* )
+				echo "Please answer yes (y) or no (n)."
+				;;
+		esac
+	done
+}
 
 # golang
 export GOPATH="$HOME/go"
@@ -137,3 +190,9 @@ else
         tmux
 fi
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yushi-abe/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yushi-abe/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/yushi-abe/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yushi-abe/google-cloud-sdk/completion.zsh.inc'; fi

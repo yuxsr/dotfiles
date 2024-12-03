@@ -1,5 +1,5 @@
 format = """
-[](green) $username\
+[](#A7C080) $username\
 $hostname\
 $directory\
 $kubernetes\
@@ -13,31 +13,33 @@ $character"""
 add_newline = false
 
 [character]
-success_symbol = "[❯](bold bright-green) "
+success_symbol = "[❯](bold #A7C080) "
 error_symbol = "[❯](bold red) "
 vicmd_symbol = "[V](bold bright-green) "
 
 [username]
-format = "[$user](bold bright-green)"
+format = "[$user](bold #A7C080)"
 disabled = false
 show_always = true
 
 [hostname]
 ssh_only = false
-format =  "[@$hostname](bold bright-green) "
+format =  "[@$hostname](bold #A7C080) "
 disabled = false
 
 [directory]
 truncation_length = 4
 truncate_to_repo = false
+style = "bold #D3C6AA"
 truncation_symbol = "…/"
 
 [kubernetes]
-format = '[$symbol$context( \($namespace\))](yellow) '
+format = '[$symbol$context( \($namespace\))](bold #DBBC7F) '
 disabled = false
 
 [git_branch]
 format = "[$symbol$branch]($style) "
+style = "bold #7FBBB3"
 truncation_length = 20
 truncation_symbol = ""
 

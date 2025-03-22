@@ -184,10 +184,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # それ以外でセッションがあればatach、なければ新規にセッション作成
 if [ -n "$(tmux ls 2>/dev/null | grep attached)" ]; then
         # do nothing
-elif [ -n "$(tmux ls 2>/dev/null)" ]; then
-        tmux a
+elif [ -n "$(tmux ls 2>/dev/null | grep default-session)" ]; then
+        tmux a -t default-session
 else
-        tmux
+        tmux -u new -s default-session
 fi
 
 
@@ -197,3 +197,9 @@ if [ -f '/Users/yushi-abe/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yushi
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/yushi-abe/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yushi-abe/google-cloud-sdk/completion.zsh.inc'; fi
 
+# pyenv(python)
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
